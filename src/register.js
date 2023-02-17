@@ -1,9 +1,11 @@
+import axios from './api/axios'
 import { useRef, useEffect, useState } from 'react'
 import { faCheck, faTimes, faInfoCircle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const USER_REGEX = /^[a-zA-Z][a-zA-Z0-9-_]{4,23}$/
 const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*]).{8,24}$/
+const REGISTER_URL = '/register'
 
 const Register = () => {
   const userRef = useRef()
@@ -55,8 +57,29 @@ const Register = () => {
       return
     }
     // Handle submit
-    console.log(username, password)
-    setSuccess(true)
+    try {
+      const response = await axios.post(REGISTER_URL, 
+        JSON.stringify({ username, password }),
+        {
+          headers: { 'Content-Type': 'application/json' },
+          withCredentials: true
+        }
+      )
+      console.log(response.data)
+      console.log(JSON.stringify(response.data))
+      setSuccess(true)
+      // Clear the input fields
+
+    } catch (err) {
+      if (!err?.response) {
+        setErrorMessage("No Server Response")
+      } else if (err.response?.status === 409) {
+        setErrorMessage("Username already taken")
+      } else {
+        setErrorMessage("Registration failed")
+      }
+      errRef.current.focus()
+    }
   }
 
   return (
@@ -72,6 +95,7 @@ const Register = () => {
       </section>
     ) : (
       <section>
+        <h1 className="title">Register Form</h1>
         <p ref={errRef} className={errMessage ? "errmsg" : "offscreen"} aria-live="assertive">
           {errMessage}
         </p>
@@ -157,7 +181,7 @@ const Register = () => {
             Passwords must match.<br />
           </p>
           {/* Submit button */}
-          <button className="submit" disabled={!validName || !validPassword || !validMatch}>
+          <button className="submitBtn" disabled={!validName || !validPassword || !validMatch}>
             Sign Up
           </button>
           {/* Sign In Info section */}

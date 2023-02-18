@@ -1,9 +1,11 @@
+import Login from "./login";
 import Register from "./register";
 
 function App() {
   return (
     <main className="App">
-      <Register />
+      {/* <Register /> */}
+      <Login />
     </main>
   )
 }

@@ -116,6 +116,7 @@ const Register = () => {
             ref={userRef}
             autoComplete="off"
             onChange={(e) => setUsername(e.target.value)}
+            value={username}
             required
             aria-invalid={validName ? "false" : "true"}
             aria-describedby="uidnote"
@@ -142,6 +143,7 @@ const Register = () => {
             type="password"
             id="password"
             onChange={(e) => setPassword(e.target.value)}
+            value={password}
             required
             aria-invalid={validPassword ? "false" : "true"}
             aria-describedby="pwdnote"
@@ -170,6 +172,7 @@ const Register = () => {
             type="password"
             id="confirm_password"
             onChange={(e) => setMatchPassword(e.target.value)}
+            value={matchPassword}
             required
             aria-invalid={validMatch ? "false" : "true"}
             aria-describedby="pwdnote"

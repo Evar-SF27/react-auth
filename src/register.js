@@ -23,7 +23,7 @@ const Register = () => {
   const [validMatch, setValidmatch] = useState(false)
   const [matchFocus, setMatchFocus] = useState(false)
 
-  const [errMessage, setErrorMessage] = useState('')
+  const [errorMessage, setErrorMessage] = useState('')
   const [success, setSuccess] = useState(false)
 
   // Sets the focus to the username field on first load
@@ -102,8 +102,8 @@ const Register = () => {
     ) : (
       <section>
         <h1 className="title">Register Form</h1>
-        <p ref={errRef} className={errMessage ? "errmsg" : "offscreen"} aria-live="assertive">
-          {errMessage}
+        <p ref={errRef} className={errorMessage ? "errmsg" : "offscreen"} aria-live="assertive">
+          {errorMessage}
         </p>
         <form onSubmit={handleSubmit}>
           {/* Username field */}

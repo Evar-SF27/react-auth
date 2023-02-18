@@ -1,5 +1,6 @@
 import { useRef, useEffect, useState, useContext } from 'react'
 import AuthContext from './context/authProvider'
+import axios from './api/axios'
 
 const LOGIN_URL = '/auth'
 
@@ -11,7 +12,7 @@ const Login = () => {
 
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
-    const [errMessage, setErrMessage] = useState('')
+    const [errorMessage, setErrorMessage] = useState('')
     const [success, setSuccess] = useState('')
 
     useEffect(() => {
@@ -19,14 +20,40 @@ const Login = () => {
     }, [])
 
     useEffect(() => {
-        setErrMessage('')
+        setErrorMessage('')
     }, [username, password])
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        setSuccess(true)
-        setUsername('')
-        setPassword('')
+
+        try {
+            const response = await axios.post(
+                LOGIN_URL,
+                JSON.stringify({ username, password }),
+                {
+                    headers: { 'Content-Type': 'application/json' },
+                    withCredentials: true
+                }
+            )
+            console.log(JSON.stringify(response?.data))
+            const accessToken = response?.data?.accessToken
+            const roles = response?.data?.roles
+            setAuth({ username, roles, accessToken })
+            setSuccess(true)
+            setUsername('')
+            setPassword('')
+        } catch (err) {
+            if (!err?.response) {
+                setErrorMessage("No Server Response")
+            } else if (err.response?.status === 400) {
+                setErrorMessage("Incomplete credentials: Username or Password is missing")
+            } else if (err.response?.status === 401) {
+                setErrorMessage("Unauthorised")
+            } else {
+                setErrorMessage("Login failed")
+            }
+            errRef.current.focus()
+        }
     }
 
   return (
@@ -44,8 +71,8 @@ const Login = () => {
         ) : (
             <section>
                 <h1 className="title">Login Form</h1>
-                <p ref={errRef} className={errMessage ? "errmsg" : "offscreen"} aria-live="assertive">
-                    {errMessage}
+                <p ref={errRef} className={errorMessage ? "errmsg" : "offscreen"} aria-live="assertive">
+                    {errorMessage}
                 </p>
                 <form onSubmit={handleSubmit}>
                     <label htmlFor="username">Username:</label>

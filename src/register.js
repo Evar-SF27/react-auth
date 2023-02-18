@@ -30,11 +30,13 @@ const Register = () => {
   useEffect(() => {
     userRef.current.focus()
   },[])
+
   // Enforces the USER_REGEX 
   useEffect(() => {
     const result = USER_REGEX.test(username)
     setValidName(result)
   },[username])
+
   // Enforces the PASSWORD_REGEX
   useEffect(() => {
     const result = PASSWORD_REGEX.test(password)
@@ -42,6 +44,7 @@ const Register = () => {
     const match = password === matchPassword
     setValidmatch(match)
   },[password, matchPassword])
+
   // Resets the error message on change
   useEffect(() => {
     setErrorMessage('')
@@ -69,6 +72,9 @@ const Register = () => {
       console.log(JSON.stringify(response.data))
       setSuccess(true)
       // Clear the input fields
+      setUsername('')
+      setPassword('')
+      setMatchPassword('')
 
     } catch (err) {
       if (!err?.response) {

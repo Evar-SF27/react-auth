@@ -1,13 +1,4 @@
-import Admin from './admin'
-import Editor from './editor'
-import Home from './home'
-import Layout from './layout'
-import LinkPage from './linkPage'
-import Login from './login'
-import Lounge from './lounge'
-import Missing from './missing'
-import Register from './register'
-import Unauthorised from './unauthorised'
+import { Admin, Editor, Home, Layout, LinkPage, Login, Lounge, Missing, Register, RequireAuth, Unauthorised } from './components'
 import { Routes, Route } from 'react-router-dom'
 
 function App() {
@@ -20,10 +11,12 @@ function App() {
         <Route path="linkpage" element={<LinkPage />} />
         <Route path="unauthorised" element={<Unauthorised />} />
         {/* Protected Routes */}
-        <Route path="/" element={<Home />} />
-        <Route path="editor" element={<Editor />} />
-        <Route path="admin" element={<Admin />} />
-        <Route path="lounge" element={<Lounge />} />
+        <Route element={<RequireAuth />}>
+          <Route path="/" element={<Home />} />
+          <Route path="editor" element={<Editor />} />
+          <Route path="admin" element={<Admin />} />
+          <Route path="lounge" element={<Lounge />} />
+        </Route>
         {/* Catch all */}
         <Route path="missing" element={<Missing />} />
       </Route>

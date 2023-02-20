@@ -8,8 +8,8 @@ const LOGIN_URL = '/auth'
 const Login = () => {
     const { setAuth } = useAuth()
 
-    const navigate = useNavigate()
     const location = useLocation()
+    const navigate = useNavigate()
     const from = location.state?.from?.pathname || "/"
 
     const userRef = useRef()
@@ -45,7 +45,7 @@ const Login = () => {
             setAuth({ username, roles, accessToken })
             setUsername('')
             setPassword('')
-            navigate(from, { replace: true})
+            navigate(from, { replace: true })
         } catch (err) {
             if (!err?.response) {
                 setErrorMessage("No Server Response")

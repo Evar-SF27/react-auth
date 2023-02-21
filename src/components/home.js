@@ -10,8 +10,6 @@ const Home = () => {
         navigate('/linkpage');
     }
 
-    
-
     return (
         <section>
             <h1>Home</h1>

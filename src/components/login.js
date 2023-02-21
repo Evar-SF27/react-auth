@@ -6,7 +6,7 @@ import useAuth from '../hooks/useAuth'
 const LOGIN_URL = '/auth'
 
 const Login = () => {
-    const { setAuth } = useAuth()
+    const { setAuth, persist, setPersist } = useAuth()
 
     const location = useLocation()
     const navigate = useNavigate()
@@ -60,6 +60,14 @@ const Login = () => {
         }
     }
 
+    const togglePersist = () => {
+        setPersist(prev => !prev)
+    }
+
+    useEffect(() => {
+        localStorage.setItem("persist", persist)
+    }, [persist])
+
   return (
     <section>
         <h1 className="title">Login Form</h1>
@@ -89,6 +97,15 @@ const Login = () => {
             <button className="submitBtn" disabled={!username || !password}>
                 Sign In
             </button>
+            <div className="persistCheck">
+                <input 
+                    type="checkbox" 
+                    id="persist"
+                    onChange={togglePersist}
+                    checked={persist}
+                />
+                <label htmlFor="persit">Trust this device</label>
+            </div>
             {/* Sign In Info section */}
             <p className="info">
                 I do not have an account.&nbsp;

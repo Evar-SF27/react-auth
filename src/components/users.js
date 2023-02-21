@@ -18,7 +18,6 @@ const Users = () => {
                 const response = await axiosPrivate.get('/employees', {
                     signal: controller.signal
                 })
-                console.log(response.data)
                 isMounted && setUsers(response.data)
             } catch (err) {
                 console.error('error', err)
@@ -30,9 +29,10 @@ const Users = () => {
 
         return () => {
             isMounted = false
-            controller.abort()
+            isMounted && controller.abort()
         }
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
   return (
